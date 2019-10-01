@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="assignment.kakaopay.pickme.mapper.KakaoMapper">
+	
+	<select id="getTime" resultType="string">
+		select now()
+	</select>
+	
+	<select id="selectTopSumAmtEachYear" resultType="hmap">
+	<![CDATA[
+		select
+			year,
+			max(sum) as sumAmt,
+			name,
+			acctNo
+		from
+		(
+			select
+				year(a.tr_date) as year,
+				sum(a.tr_amount - a.tr_fee) as sum,
+				b.acct_name as name,
+				a.acct_no as acctNo
+			from
+				tbl_transaction a,
+				tbl_account b
+			where
+				a.acct_no = b.acct_no
+			and a.can_yn = 'N'
+			group by
+				year(a.tr_date),
+				b.acct_name
+			order by
+				year(a.tr_date) asc,
+		        sum(a.tr_amount - a.tr_fee) desc
+		) c
+		group by
+			c.year asc;	
+	]]>
+    </select>
+	
+	
+</mapper>

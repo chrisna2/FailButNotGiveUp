@@ -1,0 +1,17 @@
+server:
+  port: 8080   
+spring:
+  application:    name: kakao-stock-service
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://52.79.240.193:3306/for_kakao_stock?useUnicode=true&charaterEncoding=utf-8&serverTimezone=UTC
+    username: for_kakao_pay
+    password: nhk351   
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mappers/**/*.xml  
