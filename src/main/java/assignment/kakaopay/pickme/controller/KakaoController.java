@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import assignment.kakaopay.pickme.service.KakaoService;
 
+/**
+ * 과제 호출을 위한 RestController 
+ * @author 나현기
+ */
 @RestController
 public class KakaoController {
 
@@ -27,8 +31,8 @@ public class KakaoController {
 	 * @throws Exception
 	 */
 	@GetMapping("/function1")
-	public List<HashMap<String, Object>> selectTopSumAmtEachYear() throws Exception {
-		return service.selectTopSumAmtEachYear();
+	public List<HashMap<String, Object>> selectTopSumAmtByCustEachYear() throws Exception {
+		return service.selectTopSumAmtByCustEachYear();
 	}
 	
 	/**
@@ -40,4 +44,15 @@ public class KakaoController {
 	public List<HashMap<String, Object>> selectNoTransEachYear() throws Exception {
 		return service.selectNoTransEachYear();
 	}
+	
+	/**
+	 * [문제 3] 년도 별, 관리점 별 거래금액 합계 추출 : 출력 순서 [합계금액 desc] 
+	 * @return List<HashMap<String, Object>> : jsonArray
+	 * @throws Exception
+	 */
+	@GetMapping("/function3")
+	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear() throws Exception {
+		return service.selectRankSumAmtByBrEachYear();
+	}
+	
 }

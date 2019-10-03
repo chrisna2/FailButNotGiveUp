@@ -21,13 +21,18 @@ public class KakaoServiceImpl implements KakaoService {
 	}
 
 	@Override
-	public List<HashMap<String, Object>> selectTopSumAmtEachYear() throws Exception {
-		return mapper.selectTopSumAmtEachYear();
+	public List<HashMap<String, Object>> selectTopSumAmtByCustEachYear() throws Exception {
+		return mapper.selectTopSumAmtByCustEachYear();
 	}
 
 	@Override
 	public List<HashMap<String, Object>> selectNoTransEachYear() throws Exception {
 		return mapper.selectNoTransEachYear();
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear() throws Exception {
+		return mapper.selectRankSumAmtByBrEachYear();
 	}
 
 }

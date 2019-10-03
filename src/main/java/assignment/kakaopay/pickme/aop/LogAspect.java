@@ -12,9 +12,8 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * 컨트롤러에서 받아오는 입력 출력 로그 출력 AOP 클래스 
+ * 컨트롤러에서 받아오는 입력과 출력 로그 출력 AOP 클래스 
  * @author 나현기
- *
  */
 @Aspect
 @Component
@@ -23,6 +22,11 @@ public class LogAspect {
 	
 	private Logger logger = LoggerFactory.getLogger(LogAspect.class);
 	
+	/**
+	 * 컨트롤러 호출시 호출 컨트롤러 메서드 및 입력 파라미터 call 로그 처리
+	 * @param joinPoint 
+	 * @throws Throwable
+	 */
 	@Before("execution(* *..controller.*Controller.*(..))")
 	public void before(JoinPoint joinPoint) throws Throwable {
 		String paramInfo = "";
@@ -38,8 +42,13 @@ public class LogAspect {
 					+ paramInfo);
 	}
 	
+	/**
+	 * 에러 발생시 exception 로그 처리
+	 * @param ex
+	 * @throws Throwable
+	 */
 	@AfterThrowing(pointcut = "execution(* *..controller.*Controller.*(..))", throwing = "ex")
 	public void afterThrowing(Exception ex) throws Throwable {
-		logger.info("@AfterThrowing:" + ex.getCause());
+		logger.info("\n\t@AfterThrowing:" + ex.getCause());
 	}
 }

@@ -9,7 +9,7 @@
 		select now()
 	</select>
 	
-	<select id="selectTopSumAmtEachYear" resultType="hmap">
+	<select id="selectTopSumAmtByCustEachYear" resultType="hmap">
 	<![CDATA[
 		select
 			year,
@@ -68,5 +68,9 @@
 	]]>
 	</select>
 	
+	<select id="selectRankSumAmtByBrEachYear" resultType="hmap">
+
+
+	</select>
 	
 </mapper>

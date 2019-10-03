@@ -21,17 +21,20 @@ import assignment.kakaopay.pickme.controller.KakaoController;
 import assignment.kakaopay.pickme.service.KakaoService;
 
 /**
- * 문제 1 단위 테스트 WebMvcTest 클래스 구현 
+ * [문제 1] 단위 테스트 WebMvcTest 클래스 구현 
  * @author 나현기
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(KakaoController.class)
 @AutoConfigureMybatis
-public class function1ControllerTest {
+public class function1Test {
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private KakaoService service;
+	
 	@Test
 	public void function1() throws Exception{
 		//KakaoController의  "/function1" 매핑으로 정의

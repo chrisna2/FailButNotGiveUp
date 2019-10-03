@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SQL실행시 로그 롹인 밑 데이터 검증 인터셉트
+ * mapper호출시 SQL 로그처리 롹인 밑 데이터 검증 인터셉트 
  * @author 나현기
  *
  */
