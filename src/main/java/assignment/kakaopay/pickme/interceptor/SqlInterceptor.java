@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
@@ -58,10 +57,9 @@ public class SqlInterceptor implements Interceptor {
 	}
 	
 	public Object intercept(Invocation invocation) throws Throwable {
-		logger.trace("sql statement logging");
+		logger.info("sql statement logging");
 		
 		Object result = null;
-		int resultCount = 0;
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler preparedStatement = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(preparedStatement);
@@ -83,7 +81,7 @@ public class SqlInterceptor implements Interceptor {
 				// case2) 파라미터의 객체 타입이 Map인 경우
 				List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
 				if(entryParamsValueList.size() != entryParamKeyList.size()) {
-					logger.error("[{}]SQLMAP에 정의된 파라미터가 요청된 파라미터의 개수와 일치하지 않습니다.", sqlmapId);
+					logger.info("[{}]SQLMAP에 정의된 파라미터가 요청된 파라미터의 개수와 일치하지 않습니다.", sqlmapId);
 					return null;
 				}
 				Map<String, Object> entryParamMap = new HashMap<String, Object>();
@@ -104,14 +102,13 @@ public class SqlInterceptor implements Interceptor {
 				parameterObject = entryParamMap.toString();
 			} else if(parameterObject instanceof String) {
 				// case3) 파라미터의 객체 타입이 String인 경우
-				List<ParameterMapping> paramMapping = boundSql.getParameterMappings();
 				strValue = String.format("'%s'", strValue);
 				parameterMappedSql = Pattern.compile("\\?").matcher(parameterMappedSql).replaceFirst(strValue);
 			} else {
 				// case4) 파라미터 타입이 사용자 정의 클래스인 경우
 				List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
 				if(entryParamsValueList.size() != entryParamKeyList.size()) {
-					logger.error("[{}]SQLMAP에 정의된 파라미터가 요청된 파라미터의 개수와 일치하지 않습니다.", sqlmapId);
+					logger.info("[{}]SQLMAP에 정의된 파라미터가 요청된 파라미터의 개수와 일치하지 않습니다.", sqlmapId);
 					return null;
 				}
 				Class<? extends Object> parameterClass = parameterObject.getClass();
@@ -138,18 +135,22 @@ public class SqlInterceptor implements Interceptor {
 			e.printStackTrace();
 		}
 		parameterMappedSql = parameterMappedSql.replaceAll("\n\t\t", "\n");
-		logger.info("[{}]\n{}", sqlmapId, parameterMappedSql);
+		logger.info("\n@SQL_query :\n[{}]\n{}", sqlmapId, parameterMappedSql);
 		
 		try {
 			result = invocation.proceed();
-		} catch(Exception e) {
+		} 
+		catch(Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			logger.info("\n@SQL_result :\n"+result.toString());
 		}
 		return result;
 	}
 	
 	public List<Object> getParameters(Configuration configuration, BoundSql boundSql, Object mehtodParam) {
-		List paramList = new ArrayList<Object>();
+		List<Object> paramList = new ArrayList<Object>();
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 		if (parameterMappings != null) {
 			for (int i = 0; i < parameterMappings.size(); i++) {
@@ -172,8 +173,5 @@ public class SqlInterceptor implements Interceptor {
 	
 	public Object plugin(Object target) {
 		return Plugin.wrap(target, this);
-	}
-	
-	public void setProperties(Properties properties) {
 	}
 }

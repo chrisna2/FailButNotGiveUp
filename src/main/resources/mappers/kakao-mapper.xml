@@ -64,7 +64,7 @@
 					acct_no
 		    )
 		order by
-			b.year asc;
+			b.year asc
 	]]>
 	</select>
 	
@@ -84,7 +84,7 @@
 				from
 					tbl_transaction
 				where
-					year(tr_date) = ${year}
+					year(tr_date) = #{value}
 				and can_yn = 'N'
 				group by
 					acct_no    
@@ -95,7 +95,7 @@
 		group by
 			a.br_code
 		order by 
-			sum(c.sum_amt) desc;
+			sum(c.sum_amt) desc
 	]]>
 	</select>
 	
@@ -106,7 +106,37 @@
 		from 
 			tbl_transaction
 		order by
-			year asc;
+			year asc
+	]]>
+	</select>
+	
+	<select id="selectSumAmtByBrToBrName" resultType="java.util.HashMap" parameterType="hmap">
+	<![CDATA[
+		select
+			b.br_name as brName,
+		    b.br_code as brCode,
+		    sum(c.tr_amount) as sumAmt
+		from
+			tbl_account a,
+		    tbl_branch b,
+		    tbl_transaction c
+		where 1 = 1
+		and	a.acct_no = c.acct_no
+		and a.br_code = b.br_code
+		and c.can_yn = 'N'
+	    and b.br_name in 
+	]]>
+		<foreach collection="list_in" item="item" index="index" separator="," open="(" close=")">
+        	#{item}
+        </foreach>
+	</select>
+	
+	<select id="selectBrName" resultType="string">
+	<![CDATA[
+		select
+			br_name
+		from
+			tbl_branch
 	]]>
 	</select>
 	

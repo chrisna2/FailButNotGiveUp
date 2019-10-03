@@ -13,4 +13,6 @@ public interface KakaoService {
 	
 	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear() throws Exception;
 
+	public HashMap<String, Object> selectSumAmtByBrToBrName(HashMap<String, Object> param) throws Exception;
+
 }

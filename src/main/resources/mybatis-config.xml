@@ -2,7 +2,7 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!-- mybatis와 관련한 설정을 여기서 해준다~ 원래는. -->
+<!-- mybatis와 관련한 설정을 해준다. -->
 <configuration>
 
 	<typeAliases>

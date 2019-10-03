@@ -28,8 +28,22 @@ public interface KakaoMapper {
 	 * @return List<HashMap<String, Object>> : 년도 별, 관리점 별 거래금액 합계 추출 List
 	 */
 	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear(String year);
+	/**
+	 * 거래정보 실행 년도 추출
+	 * @return List<String> 연도 추출
+	 */
 	public List<String> selectTransGroupYear();
 	
-	
+	/**
+	 * [문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력
+	 * @param paramForTest 
+	 * @return List<HashMap<String, Object>> : 년도 별, 관리점 별 거래금액 합계 추출 List
+	 */
+	public HashMap<String, Object> selectSumAmtByBrToBrName(HashMap<String, Object> param);
+	/**
+	 * 관리점명 목록 조회
+	 * @return List<String> 관리점명 목록
+	 */
+	public List<String> selectBrName();
 	
 }
