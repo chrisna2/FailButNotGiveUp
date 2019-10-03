@@ -7,5 +7,6 @@ public interface KakaoService {
 	
 	public String getTime() throws Exception;
 	public List<HashMap<String, Object>> selectTopSumAmtEachYear() throws Exception;
+	public List<HashMap<String, Object>> selectNoTransEachYear() throws Exception;
 
 }

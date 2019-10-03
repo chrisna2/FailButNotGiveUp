@@ -40,6 +40,33 @@
 			c.year asc;	
 	]]>
     </select>
+    
+	<select id="selectNoTransEachYear" resultType="hmap">
+	<![CDATA[
+		select
+			b.year,
+		    a.acct_name as name,
+		    a.acct_no as acctNo
+		from 
+			tbl_account a,
+		    (select distinct year(tr_date) as year from tbl_transaction) b
+		where
+			a.acct_no not in (
+				select 
+					acct_no
+				from
+					tbl_transaction
+				where 
+					can_yn = 'N'
+				and year(tr_date) in (b.year)
+				group by
+					year(tr_date),
+					acct_no
+		    )
+		order by
+			b.year asc;
+	]]>
+	</select>
 	
 	
 </mapper>

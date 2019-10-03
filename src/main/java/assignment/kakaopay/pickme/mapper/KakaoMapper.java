@@ -10,5 +10,6 @@ public interface KakaoMapper {
 	
 	public String getTime();
 	public List<HashMap<String, Object>> selectTopSumAmtEachYear();
+	public List<HashMap<String, Object>> selectNoTransEachYear();
 	
 }

@@ -25,4 +25,9 @@ public class KakaoServiceImpl implements KakaoService {
 		return mapper.selectTopSumAmtEachYear();
 	}
 
+	@Override
+	public List<HashMap<String, Object>> selectNoTransEachYear() throws Exception {
+		return mapper.selectNoTransEachYear();
+	}
+
 }

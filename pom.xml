@@ -27,6 +27,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- Test Tool : hamcrest 유용한 매처를 지원 -->
+		<dependency>
+		    <groupId>org.hamcrest</groupId>
+		    <artifactId>hamcrest</artifactId>
+		    <version>2.1</version>
+		    <scope>test</scope>
+		</dependency>
+		
 		<!-- MySql JDBC -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -39,6 +47,14 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.1.0</version>
+		</dependency>
+		
+		<!-- Mybatis-test -->
+		<dependency>
+		    <groupId>org.mybatis.spring.boot</groupId>
+		    <artifactId>mybatis-spring-boot-starter-test</artifactId>
+		    <version>2.1.0</version>
+		    <scope>test</scope>
 		</dependency>
 		
 		<!-- WEB -->
