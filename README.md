@@ -2,13 +2,17 @@
 ### For Kakao Stock! 
 
 # 사용한 개발 프레임워크
+
 1. Spring Boot
 > * Mybatis + MySql JDBC
 > * Spring boot starter aop
 > * Spring boot starter web
 > * Spring boot starter test
 > * Jquery
-2. AWS EC2 + MySQL 데이터베이스 환경 구성 
+
+2. AWS EC2 linux + MySQL 데이터베이스 환경 구성 
+> * 접속 정보 IP : 52.79.240.193:3306 
+> * properties.yml에 설정되어 있어서 jar 파일 실행시 언제든 접속 가능
 
 # 문제 해결 방법
 
