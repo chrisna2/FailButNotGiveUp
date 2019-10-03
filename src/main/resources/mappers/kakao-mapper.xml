@@ -68,9 +68,46 @@
 	]]>
 	</select>
 	
-	<select id="selectRankSumAmtByBrEachYear" resultType="hmap">
-
-
+	<select id="selectRankSumAmtByBrEachYear" resultType="hmap" parameterType="string">
+	<![CDATA[
+		select
+			b.br_name as brName,
+		    b.br_code as brCode,
+		    sum(c.sum_amt) as sumAmt
+		from
+			tbl_account a,
+		    tbl_branch b,
+		    (
+				select 
+					acct_no,
+					sum(tr_amount) as sum_amt
+				from
+					tbl_transaction
+				where
+					year(tr_date) = ${year}
+				and can_yn = 'N'
+				group by
+					acct_no    
+		    ) c    
+		where
+			a.acct_no = c.acct_no
+		and a.br_code = b.br_code
+		group by
+			a.br_code
+		order by 
+			sum(c.sum_amt) desc;
+	]]>
+	</select>
+	
+	<select id="selectTransGroupYear" resultType="string">
+	<![CDATA[
+		select 
+			distinct year(tr_date) as year 
+		from 
+			tbl_transaction
+		order by
+			year asc;
+	]]>
 	</select>
 	
 </mapper>

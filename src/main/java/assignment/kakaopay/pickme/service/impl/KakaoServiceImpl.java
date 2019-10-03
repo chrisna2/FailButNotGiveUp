@@ -1,5 +1,6 @@
 package assignment.kakaopay.pickme.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,7 +33,29 @@ public class KakaoServiceImpl implements KakaoService {
 
 	@Override
 	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear() throws Exception {
-		return mapper.selectRankSumAmtByBrEachYear();
+		
+		List<HashMap<String, Object>> result = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> dataEachYear;
+		List<HashMap<String, Object>> dataList;
+		
+		//각 거래 연도 그룹 조회
+		List<String> eachYear = mapper.selectTransGroupYear();
+		
+		for(String year:eachYear) {
+			//초기화
+			dataEachYear = new HashMap<String, Object>();
+			dataList = new ArrayList<HashMap<String,Object>>();
+			
+			//데이터 조회
+			dataList = mapper.selectRankSumAmtByBrEachYear(year);
+			
+			//데이터 구성
+			dataEachYear.put("year", year);
+			dataEachYear.put("dataList", dataList);
+			result.add(dataEachYear);
+		}
+		
+		return result;
 	}
 
 }

@@ -27,7 +27,8 @@ public interface KakaoMapper {
 	 * [문제 3] 년도 별, 관리점 별 거래금액 합계 추출 : 출력 순서 [합계금액 desc] 
 	 * @return List<HashMap<String, Object>> : 년도 별, 관리점 별 거래금액 합계 추출 List
 	 */
-	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear();
+	public List<HashMap<String, Object>> selectRankSumAmtByBrEachYear(String year);
+	public List<String> selectTransGroupYear();
 	
 	
 	
