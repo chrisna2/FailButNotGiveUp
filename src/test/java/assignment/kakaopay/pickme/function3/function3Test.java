@@ -19,7 +19,7 @@ import assignment.kakaopay.pickme.controller.KakaoController;
 import assignment.kakaopay.pickme.service.KakaoService;
 
 /**
- * 문제 1 단위 테스트 WebMvcTest 클래스 구현 
+ * 문제 3 단위 테스트 WebMvcTest 클래스 구현 
  * @author 나현기
  */
 @RunWith(SpringRunner.class)
