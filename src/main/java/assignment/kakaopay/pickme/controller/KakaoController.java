@@ -3,6 +3,8 @@ package assignment.kakaopay.pickme.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +70,13 @@ public class KakaoController {
 	 * @throws Exception
 	 */
 	@PostMapping("/function4")
-	public HashMap<String, Object> selectSumAmtByBrToBrName(@RequestBody HashMap<String, Object> param) throws Exception {
+	public HashMap<String, Object> selectSumAmtByBrToBrName(@RequestBody HashMap<String, Object> param, HttpServletResponse response) throws Exception {
 		
 		HashMap<String, Object> result = service.selectSumAmtByBrToBrName(param);
+		
+		if(result.containsKey("code")&&result.containsValue("404")) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
 		
 		return result;
 	}

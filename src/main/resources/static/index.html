@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>과제 인덱스</title>
+<title>카카오 과제 인덱스</title>
 <script src="/js/jquery-3.4.1.min.js"></script>
 </head>
 <body>
-	<h1>카카오 과제 인덱스 입니다</h1>
+	<h1>카카오 과제 인덱스</h1>
     <br>
     	[문제 1] 년도 별 최대 합계 금액 고객 정보 추출 <br><a href="/function1">URL : localhost:8080/function1 [get]</a>
 	<br>
@@ -17,7 +17,7 @@
     	[문제 3] 년도 별, 관리점 별 거래금액 합계 추출 : 출력 순서 [합계금액 desc]<br><a href="/function3">URL : localhost:8080/function3 [get]</a>
 	<br>
     <br>
-    	[문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력<br>URL : localhost:8080/function4 [post]
+    	[문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력<br>URL1 : localhost:8080/function4 [post|현재 인덱스에서 확인 가능]
     	<br><br>
     	<table border="1">
     		<tr>
@@ -33,7 +33,6 @@
     	<h4>출력결과</h4>
     	<hr>
     	<div id="resultDiv"></div>
-	<br>
 </body>
 <script type="text/javascript">
 	function goFunction4() {
@@ -59,13 +58,19 @@
 				data		:	JSON.stringify(eventUserData),
 				success : function(result)
 				{
-					var resultJson = JSON.parse(result);
-					alert(resultJson);
+					var showDataJson = JSON.stringify(result);
+					$("#resultDiv").empty();
+					$("#resultDiv").append(showDataJson);
+					$("#resultDiv").append("<hr>※ INPUT JSON PARAMETER → "+JSON.stringify(eventUserData));
 				},
 				error : function(result)
 				{
-					var errorMsgJson = JSON.parse(result.responseText);
-					alert(errorMsgJson.errorMsg);
+					var showDataJson = JSON.stringify(result);
+					$("#resultDiv").empty();
+					$("#resultDiv").append("http status : "+result.status);
+					$("#resultDiv").append("<br>"+result.responseText);
+					$("#resultDiv").append("<hr>※ RAW DATA → "+showDataJson);
+					$("#resultDiv").append("<hr>※ INPUT JSON PARAMETER → "+JSON.stringify(eventUserData));
 				}
 			});
 		}

@@ -1,6 +1,7 @@
 package assignment.kakaopay.pickme.aop;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
 
 /**
  * 컨트롤러에서 받아오는 입력과 출력 로그 출력 AOP 클래스 
@@ -41,6 +41,19 @@ public class LogAspect {
 					+ "." + joinPoint.getSignature().getName()
 					+ paramInfo);
 	}
+	
+	/**
+	 * 컨트롤러 호출 이후 리턴 결과 출력 AOP 클레스
+	 * @param joinPoint
+	 * @param result
+	 * @throws Throwable
+	 */
+	@AfterReturning(pointcut = "execution(* *..controller.*Controller.*(..))", returning = "result")
+	public void afterReturning(JoinPoint joinPoint, Object result) throws Throwable {
+		logger.info("\n\t@Controller Return : " + joinPoint.getSignature().getDeclaringTypeName()+ "." + joinPoint.getSignature().getName()
+				  + " \n\t@Result : " + result.toString());
+	}
+	
 	
 	/**
 	 * 에러 발생시 exception 로그 처리

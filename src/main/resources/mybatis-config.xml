@@ -2,13 +2,8 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!-- mybatis와 관련한 설정을 해준다. -->
 <configuration>
 
-	<typeAliases>
-		<typeAlias alias="hmap" type="java.util.HashMap" />
-	</typeAliases>
-	
 	<plugins>
 		<plugin interceptor="assignment.kakaopay.pickme.interceptor.SqlInterceptor" />
 	</plugins>

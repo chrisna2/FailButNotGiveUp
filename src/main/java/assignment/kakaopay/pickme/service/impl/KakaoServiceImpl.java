@@ -68,10 +68,10 @@ public class KakaoServiceImpl implements KakaoService {
 		
 		//입력 파라미터 체크
 		String br_name = (String)param.get("brName");
-		
+		//영업점이 4개 이상일 수 있으므로 DB에서 조회
 		List<String> brNameList = mapper.selectBrName();
-		//[테스트를 전제 하에 하드 코딩. 시작] 
-		//이관된 판교점 삭제
+		
+		//[테스트를 전제 하에 하드 코딩. 시작] : 이관된 분당점 삭제
 		if(brNameList.contains("분당점")) {
 			brNameList.remove("분당점");
 		}
@@ -82,15 +82,18 @@ public class KakaoServiceImpl implements KakaoService {
 		 * [테스트를 전제 하에 하드 코딩. 끝]
 		 */
 		
-		//mapper 파라미터 수정
+		//mapper 입력 파라미터 수정
 		HashMap<String, Object> paramForTest = new HashMap<String, Object>();
 		List<String> listIn = new ArrayList<String>(); //mybatis in에 사용될 리스트 구성
 		
 		if(!brNameList.contains(br_name)) {
-			throw new KakaoException("404", "br code not found error");
+			HashMap<String, Object> errorMap = new HashMap<String, Object>();
+			errorMap.put("메세지", "br code not found error");
+			errorMap.put("code", "404");
+			return errorMap;
 		}
-		//[테스트를 전제 하에 하드 코딩. 시작] 
-		//분당점으로 이관된 데이터를 판교점에서 같이 조회 할 수 있도록 처리
+		
+		//[테스트를 전제 하에 하드 코딩. 시작] : 분당점으로 이관된 데이터를 판교점에서 같이 조회 할 수 있도록 처리
 		else {
 			if("판교점".equals(br_name)) {
 				listIn.add(br_name);
@@ -101,11 +104,10 @@ public class KakaoServiceImpl implements KakaoService {
 			}
 		}
 		paramForTest.put("list_in", listIn);
-		HashMap<String, Object> result = mapper.selectSumAmtByBrToBrName(paramForTest);
 		//원래는 정상적으로 이관이 이루어 졌다면, 해당 로직 또한 원래 필요 없어야 되는 로직입니다.
 		//[테스트를 전제 하에 하드 코딩. 끝] 
 		
-		return result;
+		return mapper.selectSumAmtByBrToBrName(paramForTest);
 	}
 
 }

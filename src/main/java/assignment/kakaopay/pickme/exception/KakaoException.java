@@ -9,15 +9,11 @@ public class KakaoException extends RuntimeException{
 	private static final long serialVersionUID = -5089032787769895226L;
 	
 	/**
-	 * errorCode : 메세지 출력 형태
-	 * - info
-	 * - warn
-	 * - error
+	 * errorCode : 에러 코드
 	 */
 	private String errorCode;
 	/**
 	 * errorMsg : 팝업창에 출력될 에러/인포 메세지
-	 * ※ 추가 메세지는 '%s'로 처리
 	 */
 	private String errorMsg;
 	

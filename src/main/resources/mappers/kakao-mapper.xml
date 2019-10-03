@@ -9,126 +9,126 @@
 		select now()
 	</select>
 	
-	<select id="selectTopSumAmtByCustEachYear" resultType="hmap">
-	<![CDATA[
-		select
-			year,
-			max(sum) as sumAmt,
-			name,
-			acctNo
-		from
-		(
+	<select id="selectTopSumAmtByCustEachYear" resultType="hashmap">
+		<![CDATA[
 			select
-				year(a.tr_date) as year,
-				sum(a.tr_amount - a.tr_fee) as sum,
-				b.acct_name as name,
-				a.acct_no as acctNo
+				year,
+				max(sum) as sumAmt,
+				name,
+				acctNo
 			from
-				tbl_transaction a,
-				tbl_account b
-			where
-				a.acct_no = b.acct_no
-			and a.can_yn = 'N'
+			(
+				select
+					year(a.tr_date) as year,
+					sum(a.tr_amount - a.tr_fee) as sum,
+					b.acct_name as name,
+					a.acct_no as acctNo
+				from
+					tbl_transaction a,
+					tbl_account b
+				where
+					a.acct_no = b.acct_no
+				and a.can_yn = 'N'
+				group by
+					year(a.tr_date),
+					b.acct_name
+				order by
+					year(a.tr_date) asc,
+			        sum(a.tr_amount - a.tr_fee) desc
+			) c
 			group by
-				year(a.tr_date),
-				b.acct_name
-			order by
-				year(a.tr_date) asc,
-		        sum(a.tr_amount - a.tr_fee) desc
-		) c
-		group by
-			c.year asc;	
-	]]>
+				c.year asc;	
+		]]>
     </select>
     
-	<select id="selectNoTransEachYear" resultType="hmap">
-	<![CDATA[
-		select
-			b.year,
-		    a.acct_name as name,
-		    a.acct_no as acctNo
-		from 
-			tbl_account a,
-		    (select distinct year(tr_date) as year from tbl_transaction) b
-		where
-			a.acct_no not in (
-				select 
-					acct_no
-				from
-					tbl_transaction
-				where 
-					can_yn = 'N'
-				and year(tr_date) in (b.year)
-				group by
-					year(tr_date),
-					acct_no
-		    )
-		order by
-			b.year asc
-	]]>
+	<select id="selectNoTransEachYear" resultType="hashmap">
+		<![CDATA[
+			select
+				b.year,
+			    a.acct_name as name,
+			    a.acct_no as acctNo
+			from 
+				tbl_account a,
+			    (select distinct year(tr_date) as year from tbl_transaction) b
+			where
+				a.acct_no not in (
+					select 
+						acct_no
+					from
+						tbl_transaction
+					where 
+						can_yn = 'N'
+					and year(tr_date) in (b.year)
+					group by
+						year(tr_date),
+						acct_no
+			    )
+			order by
+				b.year asc
+		]]>
 	</select>
 	
-	<select id="selectRankSumAmtByBrEachYear" resultType="hmap" parameterType="string">
-	<![CDATA[
-		select
-			b.br_name as brName,
-		    b.br_code as brCode,
-		    sum(c.sum_amt) as sumAmt
-		from
-			tbl_account a,
-		    tbl_branch b,
-		    (
-				select 
-					acct_no,
-					sum(tr_amount) as sum_amt
-				from
-					tbl_transaction
-				where
-					year(tr_date) = #{value}
-				and can_yn = 'N'
-				group by
-					acct_no    
-		    ) c    
-		where
-			a.acct_no = c.acct_no
-		and a.br_code = b.br_code
-		group by
-			a.br_code
-		order by 
-			sum(c.sum_amt) desc
-	]]>
+	<select id="selectRankSumAmtByBrEachYear" resultType="hashmap" parameterType="string">
+		<![CDATA[
+			select
+				b.br_name as brName,
+			    b.br_code as brCode,
+			    sum(c.sum_amt) as sumAmt
+			from
+				tbl_account a,
+			    tbl_branch b,
+			    (
+					select 
+						acct_no,
+						sum(tr_amount) as sum_amt
+					from
+						tbl_transaction
+					where
+						year(tr_date) = #{value}
+					and can_yn = 'N'
+					group by
+						acct_no    
+			    ) c    
+			where
+				a.acct_no = c.acct_no
+			and a.br_code = b.br_code
+			group by
+				a.br_code
+			order by 
+				sum(c.sum_amt) desc
+		]]>
 	</select>
 	
 	<select id="selectTransGroupYear" resultType="string">
-	<![CDATA[
-		select 
-			distinct year(tr_date) as year 
-		from 
-			tbl_transaction
-		order by
-			year asc
-	]]>
+		<![CDATA[
+			select 
+				distinct year(tr_date) as year 
+			from 
+				tbl_transaction
+			order by
+				year asc
+		]]>
 	</select>
 	
-	<select id="selectSumAmtByBrToBrName" resultType="java.util.HashMap" parameterType="hmap">
-	<![CDATA[
-		select
-			b.br_name as brName,
-		    b.br_code as brCode,
-		    sum(c.tr_amount) as sumAmt
-		from
-			tbl_account a,
-		    tbl_branch b,
-		    tbl_transaction c
-		where 1 = 1
-		and	a.acct_no = c.acct_no
-		and a.br_code = b.br_code
-		and c.can_yn = 'N'
-	    and b.br_name in 
-	]]>
-		<foreach collection="list_in" item="item" index="index" separator="," open="(" close=")">
-        	#{item}
-        </foreach>
+	<select id="selectSumAmtByBrToBrName" resultType="hashmap" parameterType="hashmap">
+		<![CDATA[
+			select
+				b.br_name as brName,
+			    b.br_code as brCode,
+			    sum(c.tr_amount) as sumAmt
+			from
+				tbl_account a,
+			    tbl_branch b,
+			    tbl_transaction c
+			where 1 = 1
+			and	a.acct_no = c.acct_no
+			and a.br_code = b.br_code
+			and c.can_yn = 'N'
+		    and b.br_name in 
+		]]>
+		<foreach collection="list_in" item="br_name" index="index" separator="," open="(" close=")">
+        	#{br_name}
+    	</foreach>
 	</select>
 	
 	<select id="selectBrName" resultType="string">
