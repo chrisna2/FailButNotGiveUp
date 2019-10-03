@@ -1,7 +1,7 @@
 # 특정 고객 거래내역 조회 서비스 개발 명세
 ### For Kakao Stock! 
 
-# 사용한 개발 프레임워크
+## 사용한 개발 프레임워크
 
 1. Spring Boot
 > * Mybatis + MySql JDBC
@@ -14,10 +14,10 @@
 > * 접속 정보 IP : 52.79.240.193:3306 
 > * properties.yml에 설정되어 있어서 jar 파일 실행시 언제든 접속 가능
 
-# 문제 해결 방법
+## 문제 해결 방법
 
 
-# windows docker -> linux docker [branch : mylinux]
+## windows docker -> linux docker [branch : mylinux]
 > 윈도우 도커로는 실제 웹 배포 환경을 구축하기 대단히 어려워서 가상화 서버를 통해 배포 시스템을 구축해 보기로 했다
 
 1. vmware로 centos 가상화 구축
