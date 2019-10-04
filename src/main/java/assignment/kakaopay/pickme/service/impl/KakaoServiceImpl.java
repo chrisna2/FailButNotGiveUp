@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import assignment.kakaopay.pickme.exception.KakaoException;
 import assignment.kakaopay.pickme.mapper.KakaoMapper;
 import assignment.kakaopay.pickme.service.KakaoService;
 
 @Service
+@Transactional
 public class KakaoServiceImpl implements KakaoService {
 	
 	private Logger logger = LoggerFactory.getLogger(KakaoServiceImpl.class);
@@ -64,7 +67,7 @@ public class KakaoServiceImpl implements KakaoService {
 	}
 
 	@Override
-	public HashMap<String, Object> selectSumAmtByBrToBrName(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> selectSumAmtByBrToBrName(HashMap<String, Object> param, HttpServletResponse response) throws Exception{
 		
 		//입력 파라미터 체크
 		String br_name = (String)param.get("brName");
@@ -90,6 +93,7 @@ public class KakaoServiceImpl implements KakaoService {
 			HashMap<String, Object> errorMap = new HashMap<String, Object>();
 			errorMap.put("메세지", "br code not found error");
 			errorMap.put("code", "404");
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return errorMap;
 		}
 		

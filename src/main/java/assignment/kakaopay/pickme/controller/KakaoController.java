@@ -66,18 +66,13 @@ public class KakaoController {
 	
 	/**
 	 * [문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력
-	 * @return HashMap : json
+	 * @return HashMap : json 입력 값 HashMap으로 전환
+	 * @param response : HttpServletResponse http status를 변경하기 위한 파라미터
 	 * @throws Exception
 	 */
 	@PostMapping("/function4")
 	public HashMap<String, Object> selectSumAmtByBrToBrName(@RequestBody HashMap<String, Object> param, HttpServletResponse response) throws Exception {
-		
-		HashMap<String, Object> result = service.selectSumAmtByBrToBrName(param);
-		
-		if(result.containsKey("code")&&result.containsValue("404")) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-		
+		HashMap<String, Object> result = service.selectSumAmtByBrToBrName(param, response);
 		return result;
 	}
 }
