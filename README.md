@@ -203,15 +203,74 @@ public class KakaoServiceImpl implements KakaoService {
 
 4. [문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력
 
-프로그래밍 로직 외에 다른 이유로 시간을 굉장히 잡아 먹었던 문제였습니다. ㅜ_ㅜ; 그 문제를 해결하기 위해 개천절 오전 오후를 다 보내게 되어 일정이 하루 늦어지게 되었습니다. 
+프로그래밍 로직 외에 다른 이유로 시간을 굉장히 잡아 먹었던 문제였습니다. ㅜ_ㅜ; 그 문제를 해결하기 위해 개천절 오전 오후를 다 보내게 되어 제출 일정이 오늘까지 하루 늦어지게 되었습니다. (확인은 월요일날 하시겠죠.. ㅜ_ㅜ)
 
 로직 부터 설명을 드리면 우선 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. 호출 URL은 동일하게 localhost:8080/function4 이고 통신방식은 POST입니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080을 입력하면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
 
-우선 문제에 조건가운데 분당점이 판교로 이관되었다는 것에 집중 했습니다. 신용보증기금 차세대 프로젝트를 진행하면서 이수관 업무를 맏았던 저로서는
-정상적으로 이관이 완료가 되었다면 해당 하위 데이터가 모두 판교점으로 이관 되어야 한다고 생각했습니다. 즉 분당점의 데이터는 판교점으로 조회할때 같이 조회되어야 한다고 생각했습니다. 그
+우선 문제에 조건가운데 분당점이 판교로 이관되었다는 것에 집중 했습니다. ***신용보증기금 차세대 프로젝트를 진행하면서 이수관 업무를 맏았던 저로서는
+정상적으로 이관이 완료가 되었다면 해당 하위 데이터가 모두 판교점으로 이관 되어야 한다고 생각했습니다.*** 즉 분당점의 데이터는 판교점으로 조회할때 같이 조회가 되어야 됩니다. 하지만 어디까지나 4번 문제 한정의 상황에서 그 모든 것을 반영하기 위해서 일부 하드코딩이 필요했습니다.
 
+JAVA 서비스 로직 부분입니다.
 
+```JAVA
+@Service
+@Transactional
+public class KakaoServiceImpl implements KakaoService {
+	
+	/** ...중략... **/
+	
 
+	@Override
+	public HashMap<String, Object> selectSumAmtByBrToBrName(HashMap<String, Object> param, HttpServletResponse response) 
+	throws Exception{
+		
+		//입력 파라미터 체크
+		String br_name = (String)param.get("brName");
+		//영업점이 4개 이상일 수 있으므로 DB에서 조회
+		List<String> brNameList = mapper.selectBrName();
+		
+		//[테스트를 전제 하에 하드 코딩. 시작] : 이관된 분당점 삭제
+		if(brNameList.contains("분당점")) {
+			brNameList.remove("분당점");
+		}
+		/* 원래는 업무적으로 이관이 이루어 지면 분당점은 지워지고
+		 * 이관과 관련되어 모든 데이터가 바뀌어 있어야 정상입니다.
+		 * 현재는 테스트 상에 과제를 이행 하는 차원으로 가정하고
+		 * 위와 같이 하드코딩을 사용하였습니다.
+		 * [테스트를 전제 하에 하드 코딩. 끝]
+		 */
+		
+		//mapper 입력 파라미터 수정
+		HashMap<String, Object> paramForTest = new HashMap<String, Object>();
+		List<String> listIn = new ArrayList<String>(); //mybatis in에 사용될 리스트 구성
+		
+		if(!brNameList.contains(br_name)) {
+			HashMap<String, Object> errorMap = new HashMap<String, Object>();
+			errorMap.put("메세지", "br code not found error");
+			errorMap.put("code", "404");
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return errorMap;
+		}
+		
+		//[테스트를 전제 하에 하드 코딩. 시작] : 분당점으로 이관된 데이터를 판교점에서 같이 조회 할 수 있도록 처리
+		else {
+			if("판교점".equals(br_name)) {
+				listIn.add(br_name);
+				listIn.add("분당점");
+			}
+			else {
+				listIn.add(br_name);
+			}
+		}
+		paramForTest.put("list_in", listIn);
+		//원래는 정상적으로 이관이 이루어 졌다면, 해당 로직 또한 원래 필요 없어야 되는 로직입니다.
+		//[테스트를 전제 하에 하드 코딩. 끝] 
+		
+		return mapper.selectSumAmtByBrToBrName(paramForTest);
+	}
+	/** ...후략... **/
+}
+```
 
 
 
