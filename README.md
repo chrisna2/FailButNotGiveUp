@@ -305,34 +305,68 @@ public class KakaoServiceImpl implements KakaoService {
 
 # 빌드 및 실행 방법
 
-우선 위에 4번 문제를 풀기 위해 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080 을 입력하시면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
-
 ## 빌드 방법
 
 ### 1. 압축 파일 버전
-1. 현재 프로젝트를 내려 받습니다. 
+1. 현재 프로젝트를 내려 받습니다. (download zip)
 2. 압축파일을 받으신 후 압축을 풉니다.
 3. pom.xml이 있는 위치에서 shift + 오른쪽 마우스하여 PowerShall 창을 엽니다.
 (cmd에서 해당 경로로 이동하셔도 됩니다.)
-4. PowerShall 명령창에 'mvn clean install' 명령을 입력합니다.
+4. PowerShall 명령창에 'mvn clean install' 명령을 입력합니다. (maven 설치하고 환경변수 설정 필수!)
 5. 그러면 target 폴더가 생성되면서 그 안에 'KakaoPay-0.0.1-SNAPSHOT.jar' 파일이 생성됩니다.
 
-### 2. 이클립스(STS4) 사용시
-1. 현재 프로젝트 레포지토리 주소를 복사합니다.
-2. 이클리스 상에서 
+### 2. STS4(이클립스) 사용시
+1. 현재 프로젝트 레포지토리 주소를 복사합니다. (clone uri)
+2. 이클리스 상에서 File > import 누르시고 Git > Project from Git을 클릭 
+3. Clone URI를 누르시고 복사했던 URI를 붙여넣기 합니다.
+4. Next > ... > import exsiting Eclipse projects 클릭 (이전까지 설정은 사용자 상황에 맞게 설정해주세요)
+5. finish 클릭후 프로젝트가 완전히 생성될때 까지 대기
+6. 프로젝트 오른쪽 마우스 클릭 > Run As > Maven install 클릭
+7. 그러면 target 폴더가 생성되면서 그 안에 'KakaoPay-0.0.1-SNAPSHOT.jar' 파일이 생성됩니다.
 
 
+## 실행 방법
 
-조회 url입니다.
+우선 위에 4번 문제를 풀기 위해 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080 을 입력하시면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
+
+### 조회 url입니다.
+[문제 1] 년도 별 최대 합계 금액 고객 정보 추출
+
+URL : localhost:8080/function1 [get]
+
+[문제 2] 년도 별 거래가 없는 고객 정보 추출
+
+URL : localhost:8080/function2 [get]
+
+[문제 3] 년도 별, 관리점 별 거래금액 합계 추출 : 출력 순서 [합계금액 desc]
+
+URL : localhost:8080/function2 [get]
+
+[문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력
+
+URL : localhost:8080/function4 [post]
+[localhost:8080 접속시 인덱스에서 확인 가능]
 
 
+### 테스크 모듈
+src/test/java/assignment/kakaopay/pickme 경로에 각각의 url 이름으로 된 패키지에 단위 테스트 클래스를 작성했습니다.
+각 문제당 한개의 단위테스트 클래스를 작성했습니다. @WebMvcTest 형식이고 
+mybatis테스트를 위해 @AutoConfigureMybatis 통해서 실제 DB에 접속해 데이터까지 확인합니다. 실제 한번 로직을 통과하고
+입출력 데이터 형을 확인하는 구조로 생성했습니다. 자세한 내용은 코드를 참조해 주시길 부탁드립니다.
 
 
+[문제 1] 년도 별 최대 합계 금액 고객 정보 추출
 
+function1Test.java
 
+[문제 2] 년도 별 거래가 없는 고객 정보 추출
 
+function2Test.java
 
+[문제 3] 년도 별, 관리점 별 거래금액 합계 추출 : 출력 순서 [합계금액 desc]
 
+function3Test.java
 
+[문제 4] 지점명 입력시 해당지점의 거래금액 합계 출력
 
-
+function3Test.java
