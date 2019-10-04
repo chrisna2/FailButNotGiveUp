@@ -242,11 +242,12 @@ public class KakaoServiceImpl implements KakaoService {
 		HashMap<String, Object> paramForTest = new HashMap<String, Object>();
 		List<String> listIn = new ArrayList<String>(); //mybatis in에 사용될 리스트 구성
 		
+		// 분단 조회시 또는 없는 영업점의 경우..
 		if(!brNameList.contains(br_name)) {
 			HashMap<String, Object> errorMap = new HashMap<String, Object>();
 			errorMap.put("메세지", "br code not found error");
 			errorMap.put("code", "404");
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);//http status 변경
 			return errorMap;
 		}
 		
@@ -269,6 +270,35 @@ public class KakaoServiceImpl implements KakaoService {
 	/** ...후략... **/
 }
 ```
+소스에 주석으로 설명을 달아 놨지만 해당 로직은 문제 4번의 상황을 특정하여 추가로직 부분이 들어간 상황입니다. 그리고 판교점의 특수 상황을 조회 하기 위해 쿼리에 IN 연산을 사용했습니다. 위에 보시면 분당점과 같은 없는 영업점을 조회하는 경우 errorMap을 리턴하도록 처리 했습니다. 원래 구상은 kakaoException처리를 하려고 했으나 그렇게 에러를 처리하는 경우 400 에러가 발생해서 문제의 정답과 틀려지게 되었습니다. exception안에 response를 받게 처리 할까도 생각했지만, 상태코드를 어거지로 바꾸는게 모양이 좋지 않아 그냥 서비스 안에 처리 할 수 있도록 처리 했습니다.
+
+위에 주석처럼 조회시 IN연산을 사용했기 때문에 Mybatis dynamic 쿼리를 사용했습니다. mybatis xml 파일소스를 같이 올립니다.
+
+```XML
+	<select id="selectSumAmtByBrToBrName" resultType="hashmap" parameterType="hashmap">
+		<![CDATA[
+			select
+				b.br_name as brName,
+			    b.br_code as brCode,
+			    sum(c.tr_amount) as sumAmt
+			from
+				tbl_account a,
+			    tbl_branch b,
+			    tbl_transaction c
+			where 1 = 1
+			and	a.acct_no = c.acct_no
+			and a.br_code = b.br_code
+			and c.can_yn = 'N'
+		    and b.br_name in 
+		]]>
+		<foreach collection="list_in" item="br_name" index="index" separator="," open="(" close=")">
+        		#{br_name}
+    		</foreach>
+	</select>
+```
+저는 현업에서 다이나믹 쿼리 사용을 지양합니다. 다이나믹 쿼리를 사용하게되면 보안 문제도 있지만 성능상에 문제가 큽니다. 조건이 바뀔 경우 쿼리가 매번 다른 쿼리로 인식하는 경우 때문에 그렇습니다. 현재는 테스트를 활용하기 위해 사용하였습니다.
+
+이제 프로그래밍 로직 외에 다른 이유로 시간을 굉장히 잡아 먹었던 문제에 대해 말씀드리도록 하겠습니다. 저 해당 쿼리가 MySQL workbench에서는 정말 잘 조회가 되던 쿼리었는데 이상하게 mybatis 를 통해서 조회하게 되면 조회 값이 null로 나오는 것이었습니다.
 
 
 
