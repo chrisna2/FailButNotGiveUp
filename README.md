@@ -305,8 +305,12 @@ public class KakaoServiceImpl implements KakaoService {
 
 # 빌드 및 실행 방법
 
-우선 위에 4번 문제를 풀기 위해 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. 호출 URL은 동일하게 localhost:8080/function4 이고 통신방식은 POST입니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080 을 입력하시면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
+우선 위에 4번 문제를 풀기 위해 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080 을 입력하시면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
 
+1. 빌드 방법
+
+
+조회 url입니다.
 
 
 
