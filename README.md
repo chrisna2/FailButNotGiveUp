@@ -307,7 +307,20 @@ public class KakaoServiceImpl implements KakaoService {
 
 우선 위에 4번 문제를 풀기 위해 화면상에 json 데이터를 입력받는 일을 처리해야 했습니다. 그래서 간단하게 index.html을 생성하여 jquery Ajax 를 활용해restController를 호출 할 수 있도록 처리 했습니다. json 데이터는 스크립트 상에서 생성했지만, 만약 평가자께서 POSTMAN이라는 API테스트 툴을 알고 계신다먼 그것을 활용해 주셔도 됩니다. (POSTMAN 활용시 Json 데이터 설정이 따로 필요합니다.) index.html 은 빌드된 jar 파일 실행 후 웹브라우저에 http://localhost:8080 을 입력하시면 바로 뜹니다. 여기에 문제 제공하신 모든 문제에 대한 대답을 정리해 놨습니다. 평가에 활용하시기 바랍니다. 
 
-1. 빌드 방법
+## 빌드 방법
+
+### 1. 압축 파일 버전
+1. 현재 프로젝트를 내려 받습니다. 
+2. 압축파일을 받으신 후 압축을 풉니다.
+3. pom.xml이 있는 위치에서 shift + 오른쪽 마우스하여 PowerShall 창을 엽니다.
+(cmd에서 해당 경로로 이동하셔도 됩니다.)
+4. PowerShall 명령창에 'mvn clean install' 명령을 입력합니다.
+5. 그러면 target 폴더가 생성되면서 그 안에 'KakaoPay-0.0.1-SNAPSHOT.jar' 파일이 생성됩니다.
+
+### 2. 이클립스(STS4) 사용시
+1. 현재 프로젝트 레포지토리 주소를 복사합니다.
+2. 이클리스 상에서 
+
 
 
 조회 url입니다.
