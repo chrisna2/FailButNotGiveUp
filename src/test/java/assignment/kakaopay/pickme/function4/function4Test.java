@@ -1,7 +1,6 @@
 package assignment.kakaopay.pickme.function4;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.iterableWithSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -10,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.HashMap;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
@@ -62,6 +62,9 @@ public class function4Test {
 								  .andExpect(status().isOk())
 								   //출력 결과가 JSON 출력값인지 확인
 								  .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+								  .andExpect(jsonPath("$", Matchers.hasKey("brCode"))) 
+								  .andExpect(jsonPath("$", Matchers.hasKey("brName")))
+								  .andExpect(jsonPath("$", Matchers.hasKey("sumAmt")))
 								  .andReturn();
 		
 		String content = result.getResponse().getContentAsString();
@@ -75,18 +78,20 @@ public class function4Test {
 		
 		HashMap<String, String> testParam = new HashMap<>();
 		testParam.put("brName", "분당점");
-		
-		
+				
 		//KakaoController의  "/function4" 매핑으로 정의
 		MvcResult result = mockMvc.perform(post("/function4").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(mapper.writeValueAsString(testParam)))//입력값 설정
 				//처리내용 출력
 				.andDo(print())
-				//테스트 상태의 값은 400 Not Found (정상)
+				//테스트 상태의 값은 400 Not Found (에러)
 				.andExpect(status().isNotFound())
 				//출력 결과가 JSON 출력값인지 확인
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 				//JSON 출력결과 확인
+				//KEY 존재 유무 확인
+				.andExpect(jsonPath("$", Matchers.hasKey("code"))) 
+				.andExpect(jsonPath("$", Matchers.hasKey("메세지")))
 				.andExpect(jsonPath("$['code']", equalTo("404")))//에러코드 확인
 				.andExpect(jsonPath("$['메세지']", equalTo("br code not found error")))//에러메세지확인
 				.andReturn();
