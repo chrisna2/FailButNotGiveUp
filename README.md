@@ -56,33 +56,33 @@ MySql을 사용했기 때문에 mysql jdbc를 설정했습니다.
 테이블로 삼아 다시 조회 합니다. 이번에는 거래년도만 그룹핑하고 그 중에 max() 함수로 합계금액의 최대값을 가지는 열을 출력 했습니다.
 
 ```sql
-			select
-				year,
-				max(sum) as sumAmt,
-				name,
-				acctNo
-			from
-			(
-				select
-					year(a.tr_date) as year,
-					sum(a.tr_amount - a.tr_fee) as sum,
-					b.acct_name as name,거래내역
-					a.acct_no as acctNo
-				from
-					tbl_transaction a,
-					tbl_account b
-				where
-					a.acct_no = b.acct_no
-				and a.can_yn = 'N'
-				group by
-					year(a.tr_date),
-					b.acct_name
-				order by
-					year(a.tr_date) asc,
-			        sum(a.tr_amount - a.tr_fee) desc
-			) c
-			group by
-				c.year asc;
+select
+	year,
+	max(sum) as sumAmt,
+	name,
+	acctNo
+from
+(
+	select
+		year(a.tr_date) as year,
+		sum(a.tr_amount - a.tr_fee) as sum,
+		b.acct_name as name,거래내역
+		a.acct_no as acctNo
+	from
+		tbl_transaction a,
+		tbl_account b
+	where
+		a.acct_no = b.acct_no
+		and a.can_yn = 'N'
+	group by
+		year(a.tr_date),
+		b.acct_name
+	order by
+		year(a.tr_date) asc,
+	        sum(a.tr_amount - a.tr_fee) desc
+) c
+group by
+	c.year asc;
 ```
 
 
