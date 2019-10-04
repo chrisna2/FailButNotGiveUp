@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
@@ -61,6 +62,12 @@ public class function2Test {
 								  .andExpect(status().isOk())
 								   //출력 결과가 JSON 출력값인지 확인
 								  .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+								   //JSON 출력결과 확인
+								  .andExpect(jsonPath("$", Matchers.iterableWithSize(4)))//배열의 크기 4건
+								   //KEY 존재 유무 확인
+								  .andExpect(jsonPath("$[0]", Matchers.hasKey("year"))) 
+								  .andExpect(jsonPath("$[0]", Matchers.hasKey("acctNo")))
+								  .andExpect(jsonPath("$[0]", Matchers.hasKey("name")))
 								  .andReturn();
 		
 		String content = result.getResponse().getContentAsString();

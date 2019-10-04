@@ -1,8 +1,11 @@
 package assignment.kakaopay.pickme.function4;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.iterableWithSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
@@ -83,6 +86,9 @@ public class function4Test {
 				.andExpect(status().isNotFound())
 				//출력 결과가 JSON 출력값인지 확인
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				//JSON 출력결과 확인
+				.andExpect(jsonPath("$['code']", equalTo("404")))//에러코드 확인
+				.andExpect(jsonPath("$['메세지']", equalTo("br code not found error")))//에러메세지확인
 				.andReturn();
 		
 		String content = result.getResponse().getContentAsString();

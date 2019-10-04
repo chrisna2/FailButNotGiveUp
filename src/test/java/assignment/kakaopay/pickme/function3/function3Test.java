@@ -3,11 +3,13 @@ package assignment.kakaopay.pickme.function3;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.HashMap;
 import java.util.List;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
@@ -58,6 +60,14 @@ public class function3Test {
 								  .andExpect(status().isOk())
 								   //출력 결과가 JSON 출력값인지 확인
 								  .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+								   //JSON 출력결과 확인
+								  .andExpect(jsonPath("$", Matchers.iterableWithSize(2)))//배열의 크기 4건
+								   //KEY 존재 유무 확인
+								  .andExpect(jsonPath("$[0]", Matchers.hasKey("year"))) 
+								  .andExpect(jsonPath("$[0]", Matchers.hasKey("dataList")))
+								  .andExpect(jsonPath("$[0]['dataList'][0]", Matchers.hasKey("brCode")))
+								  .andExpect(jsonPath("$[0]['dataList'][0]", Matchers.hasKey("brName")))
+								  .andExpect(jsonPath("$[0]['dataList'][0]", Matchers.hasKey("sumAmt")))
 								  .andReturn();
 		
 		String content = result.getResponse().getContentAsString();
