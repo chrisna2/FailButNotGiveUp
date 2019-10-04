@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;

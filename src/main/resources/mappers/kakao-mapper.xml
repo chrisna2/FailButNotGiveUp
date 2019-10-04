@@ -58,7 +58,7 @@
 						tbl_transaction
 					where 
 						can_yn = 'N'
-					and year(tr_date) in (b.year)
+					and year(tr_date) = b.year
 					group by
 						year(tr_date),
 						acct_no
