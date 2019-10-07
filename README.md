@@ -369,7 +369,7 @@ URL : localhost:8080/function4 [post]
 
 ### Unit Test 코드
 
-가장 중요한 부분인 Unit Test 코드 각각의 RestApi Cotroller Url 갯수만큼 클래스를 따로 만들어 생성했습니다.
+가장 중요한 부분인 Unit Test 코드 작성은 각각의 RestApi Cotroller Url 갯수만큼 클래스를 따로 만들어 생성했습니다.
 src/test/java/assignment/kakaopay/pickme 경로에 각각의 url 이름으로 된 패키지에 단위 테스트 클래스를 작성했습니다.
 @WebMvcTest 형식이고 MockMvc로 Mvc구조안에서 테스트를 구성했습니다.
 mybatis테스트를 위해 @AutoConfigureMybatis 통해서 실제 DB에 접속해 데이터까지 확인합니다. 
