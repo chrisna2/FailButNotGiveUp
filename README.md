@@ -70,7 +70,7 @@ from
 	select
 		year(a.tr_date) as year,
 		sum(a.tr_amount - a.tr_fee) as sum,
-		b.acct_name as name,거래내역
+		b.acct_name as name,
 		a.acct_no as acctNo
 	from
 		tbl_transaction a,
